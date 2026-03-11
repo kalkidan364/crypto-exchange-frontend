@@ -19,7 +19,7 @@ const PAIRS = [
 const Trade = () => {
   const mainChartRef = useRef(null);
   const depthChartRef = useRef(null);
-  const [activePair] = useState(PAIRS[0]);
+  const activePair = PAIRS[0];
   const [tradeMode, setTradeMode] = useState('buy');
   const [orderType, setOrderType] = useState('Limit');
   const [activeTF, setActiveTF] = useState('4H');
