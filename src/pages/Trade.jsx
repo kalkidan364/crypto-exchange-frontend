@@ -19,11 +19,9 @@ const PAIRS = [
 const Trade = () => {
   const mainChartRef = useRef(null);
   const depthChartRef = useRef(null);
-  const [activePair, setActivePair] = useState(PAIRS[0]);
+  const [activePair] = useState(PAIRS[0]);
   const [tradeMode, setTradeMode] = useState('buy');
   const [orderType, setOrderType] = useState('Limit');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [activeTab, setActiveTab] = useState('all');
   const [activeTF, setActiveTF] = useState('4H');
   const [price, setPrice] = useState(activePair.price.toFixed(2));
   const [amount, setAmount] = useState('0.00000');
@@ -32,7 +30,6 @@ const Trade = () => {
   const [candles, setCandles] = useState([]);
   const [asks, setAsks] = useState([]);
   const [bids, setBids] = useState([]);
-  const [trades, setTrades] = useState([]);
 
   const fmtPrice = (p) => {
     return p < 1 ? `$${p.toFixed(4)}` : p < 100 ? `$${p.toFixed(2)}` : `$${p.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
@@ -41,22 +38,22 @@ const Trade = () => {
   useEffect(() => {
     generateCandleData();
     buildOrderBook();
-    const interval = setInterval(() => {
-      addTrade();
-    }, 400);
-    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePair]);
 
   useEffect(() => {
     if (mainChartRef.current) drawMainChart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [candles, activeTF]);
 
   useEffect(() => {
     if (depthChartRef.current) drawDepthChart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asks, bids]);
 
   useEffect(() => {
     calcSummary();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [price, amount]);
 
   const generateCandleData = (n = 120) => {
@@ -203,15 +200,7 @@ const Trade = () => {
     ctx.fill();
   };
 
-  const addTrade = () => {
-    const base = activePair.price;
-    const up = Math.random() > 0.42;
-    const p = (base + (Math.random() - 0.5) * 20).toFixed(base < 1 ? 4 : 2);
-    const a = (Math.random() * 1.5 + 0.001).toFixed(4);
-    const now = new Date();
-    const ts = now.toTimeString().split(' ')[0];
-    setTrades(prev => [{ p, a, ts, up }, ...prev.slice(0, 59)]);
-  };
+
 
   const calcSummary = () => {
     const p = parseFloat(price) || activePair.price;
@@ -226,14 +215,7 @@ const Trade = () => {
     setAmount((maxAmt * percentage / 100).toFixed(5));
   };
 
-  const selectPair = (pair) => {
-    setActivePair(pair);
-    setPrice(pair.price.toFixed(pair.price < 1 ? 4 : 2));
-  };
 
-  const filteredPairs = PAIRS.filter(p => 
-    !searchTerm || p.sym.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <main className="main-content">

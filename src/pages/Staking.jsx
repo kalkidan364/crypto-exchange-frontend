@@ -127,7 +127,7 @@ const Staking = () => {
   };
 
   const handleConfirmStake = () => {
-    console.log('Staking:', stakeAmount, selectedStake.asset);
+    // Staking logic would go here
     setShowStakeModal(false);
     setStakeAmount('');
   };

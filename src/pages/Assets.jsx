@@ -46,6 +46,7 @@ const Assets = () => {
 
   useEffect(() => {
     drawDonut();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assets]);
 
   const drawDonut = () => {
